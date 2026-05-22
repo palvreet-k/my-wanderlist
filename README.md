@@ -2,38 +2,73 @@
 
 Full-stack application with a React frontend and Express backend.
 
-## Project Structure
+---
 
-your-app-name/
+## 📁 Project Structure
+
+```bash
+my-wanderlist/
 ├── backend/                 # Express REST API
 ├── frontend/                # React or React Native app
 └── docs/                    # Proposal and architecture diagrams
+```
 
+---
 
-## Running the Backend
+## 🚀 Running the Backend
 
-1. Open a terminal and go to the backend folder
-   cd backend
+### 1. Navigate to the backend folder
 
-2. Install dependencies
-   npm install
+```bash
+cd backend
+```
 
-3. Create a .env file inside the backend folder:
-   PORT=5000
-   MONGO_URI=your_mongodb_connection_string
-   JWT_SECRET=your_secret_key
+### 2. Install dependencies
 
-4. Start the server
-   npm run dev
+```bash
+npm install
+```
 
-## Running the Frontend
+### 3. Create a `.env` file inside the `backend` folder
 
-1. Open a second terminal and go to the frontend folder
-   cd frontend
+```env
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret_key
+```
 
-2. Install dependencies
-   npm install
+### 4. Start the backend server
 
-3. Start the app
-   npm run dev        (React web)
-   npx expo start     (React Native)
+```bash
+npm run dev
+```
+
+---
+
+## 💻 Running the Frontend
+
+### 1. Navigate to the frontend folder
+
+```bash
+cd frontend
+```
+
+### 2. Install dependencies
+
+```bash
+npm install
+```
+
+### 3. Start the frontend app
+
+#### React Web
+
+```bash
+npm run dev
+```
+
+#### React Native (Expo)
+
+```bash
+npx expo start
+```
