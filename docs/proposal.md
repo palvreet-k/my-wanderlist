@@ -68,5 +68,5 @@ Casual travelers and travel enthusiasts who want a simple, personal way to track
 | Service | Concern at scale | Upgrade needed |
 |---|---|---|
 | Render backend | CPU/memory limits hit under concurrent load | Standard plan (~$25/month) or horizontal scaling |
-| MongoDB Atlas | Storage and connection limits grow | M20 (~$130/month) or M30 (~$190/month) cluster |
+| MongoDB Atlas | Storage and connection limits grow | M20 ($130/month) or M30 ($190/month) cluster |
 | **Estimated total at scale** | | **~$155–$215/month** |
