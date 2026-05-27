@@ -1,4 +1,4 @@
-// routes/watchlist.js
+
 const express = require('express');
 const router  = express.Router();
 const Wishlist = require('../models/Wishlist.js')

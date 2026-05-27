@@ -1,4 +1,4 @@
-// routes/watchlist.js
+
 const express = require('express');
 const router  = express.Router();
 const Visited = require('../models/Visited.js')
