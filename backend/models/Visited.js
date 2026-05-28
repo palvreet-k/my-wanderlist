@@ -1,5 +1,5 @@
 // models/WatchlistItem.js
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const visitedSchema = new mongoose.Schema({
   userId:  { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
@@ -10,4 +10,4 @@ const visitedSchema = new mongoose.Schema({
   notes: {type: String,  default: ''}
 }, { timestamps: true });
 
-module.exports = mongoose.model('Visited', visitedSchema);
+export default mongoose.model('Visited', visitedSchema);

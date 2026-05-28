@@ -1,10 +1,12 @@
-require('dotenv').config();
-const passport      = require('passport');
-const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const bcrypt        = require('bcryptjs');
-const User          = require('../models/User');
+import 'dotenv/config';
+import passport      from 'passport';
+import { Strategy as LocalStrategy } from 'passport-local';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+import bcrypt        from 'bcryptjs';
+import User          from '../models/User.js';
 
 
+//Oauth Stategy with separate endpoints
 passport.use(new GoogleStrategy({
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
@@ -15,10 +17,9 @@ passport.use(new GoogleStrategy({
 )
 );
 
-
 passport.serializeUser((user, done) => done(null, user));
 passport.deserializeUser(async (id, done) => {
   done(null, id)
 });
 
-module.exports = passport;
+export default passport;

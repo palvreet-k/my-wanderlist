@@ -1,12 +1,12 @@
-require('dotenv').config();
+import 'dotenv/config';
 
-const express = require('express');
-const cors = require('cors');
-const mongoose = require('mongoose');
-const passport = require('./middleware/passport.js');
-const session = require('express-session');
-const MongoStore = require('connect-mongo');
-const authRoutes = require('./routes/auth.js');
+import express from 'express';
+import cors from 'cors';
+import mongoose from 'mongoose';
+import passport from './middleware/passport.js';
+import session from 'express-session';
+import MongoStore from 'connect-mongo';
+import authRoutes from './routes/auth.js';
 
 const app = express();
 

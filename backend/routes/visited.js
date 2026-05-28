@@ -1,8 +1,9 @@
 
-const express = require('express');
-const router  = express.Router();
-const Visited = require('../models/Visited.js')
-const protect = require('../middleware/authMiddleware');
+import express from 'express';
+import Visited from '../models/Visited.js';
+import protect from '../middleware/authMiddleware.js';
+
+const router = express.Router();
 
 // GET /api/visited
 router.get('/', protect, async (req, res) => {
@@ -29,4 +30,4 @@ router.delete('/:id', protect, async (req, res) => {
   // ...
 });
 
-module.exports = router;
+export default router;

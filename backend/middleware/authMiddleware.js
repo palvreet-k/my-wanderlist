@@ -3,4 +3,4 @@ const protect = (req, res, next) => {
   res.status(401).json({ message: 'Please log in to access this resource' });
 };
 
-module.exports = protect;
+export default protect;

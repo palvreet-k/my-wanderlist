@@ -1,8 +1,9 @@
 
-const express = require('express');
-const router  = express.Router();
-const Wishlist = require('../models/Wishlist.js')
-const protect = require('../middleware/authMiddleware');
+import express from 'express';
+import Wishlist from '../models/Wishlist.js';
+import protect from '../middleware/authMiddleware.js';
+
+const router = express.Router();
 
 // GET /api/wishlist
 router.get('/', protect, async (req, res) => {
@@ -29,4 +30,4 @@ router.delete('/:id', protect, async (req, res) => {
   // ...
 });
 
-module.exports = router;
+export default router;

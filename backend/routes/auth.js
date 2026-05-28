@@ -6,11 +6,13 @@
 
 
 
-const express = require('express');
-const passport = require('passport');
-const router  = express.Router();
-const protect = require('../middleware/authMiddleware');
+import express from 'express';
+import passport from 'passport';
+import protect from '../middleware/authMiddleware.js';
 
+const router = express.Router();
+
+// OAuth Specific Endpoints- For testing only
 router.get('/', async (req, res) => {
   res.send('<a href="/auth/google">Login with Google</a>');
 });
@@ -32,4 +34,4 @@ router.get('/logout', async (req, res) => {
   });
 });
 
-module.exports = router;
+export default router;
