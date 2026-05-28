@@ -12,8 +12,27 @@ import protect from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
+//Auth endpoints
+
+
+// router.post("/login", passport.authenticate('local', {
+//   successRedirect: "/profile", 
+//   failureRedirect: "/crash"
+// }));
+
+// router.get('/logout', function(req, res, next){ 
+//   req.logout(function(err) {
+//     if (err) { return next(err); }
+//     res.redirect('/login');
+//   });
+// });
+
 // OAuth Specific Endpoints- For testing only
-router.get('/', async (req, res) => {
+// Go to /api/auth/myauth
+// Login with Google
+// You see a message with you name
+
+router.get('/auth/myoauth', async (req, res) => {
   res.send('<a href="/auth/google">Login with Google</a>');
 });
 
@@ -21,17 +40,10 @@ router.get('/auth/google',
     passport.authenticate("google", {scope: ["profile", "email"]}));
 
 router.get('/auth/google/callback', passport.authenticate("google", {failureRedirect:"/"}), 
-    (req, res)=> {res.redirect('/profile')});
+    (req, res)=> {res.redirect('/googlewelcome')});
 
-router.get('/profile', async (req, res) => {
+router.get('/googlewelcome', async (req, res) => {
   res.send(`Welcome ${req.user.displayName}`);
-});
-
-router.get('/logout', async (req, res) => {
-  req.logout(err => {
-    if (err) return next(err);
-  res.redirect('/');
-  });
 });
 
 export default router;
