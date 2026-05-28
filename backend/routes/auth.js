@@ -26,8 +26,10 @@ router.get('/profile', async (req, res) => {
 });
 
 router.get('/logout', async (req, res) => {
-  req.logOut();
+  req.logout(err => {
+    if (err) return next(err);
   res.redirect('/');
+  });
 });
 
 module.exports = router;
