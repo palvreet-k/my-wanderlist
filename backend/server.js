@@ -7,6 +7,8 @@ import passport from './middleware/passport.js';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import authRoutes from './routes/auth.js';
+import wishlistRoutes from './routes/wishlist.js';
+import visitedRoutes from './routes/visited.js';
 
 const app = express();
 
@@ -16,8 +18,8 @@ app.use(express.json());
 app.use(session({
   secret:            "secret",
   resave:            false,
-  saveUninitialized: true,
-  // store:             MongoStore.create({ mongoUrl: process.env.MONGO_URI })
+  saveUninitialized: false,
+  store:             MongoStore.create({ mongoUrl: process.env.MONGO_URI })
 }));
 
 app.use(passport.initialize());
@@ -31,7 +33,27 @@ app.use(passport.session());
 //   res.json({ message: 'Server is running' });
 // });
 
-app.use('/', authRoutes);
+app.use('/api', authRoutes);
+app.use('/api/wishlist', wishlistRoutes);
+app.use('/api/visited', visitedRoutes)
+
+// Route not found middleware function
+
+app.use((a,b,c) =>{
+  const error = new Error("We don't have that route in our API listings");
+  error.status = 404;
+  c(error);
+});
+
+app.use((err, req, res, next)=>{
+  const statusCode = err.status || 500;
+  res.status(statusCode).json({
+    ERROR:{
+      status: statusCode,
+      message: err.message
+    }
+  })
+});
 
 // Database connection
 mongoose

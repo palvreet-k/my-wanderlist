@@ -7,16 +7,18 @@ import User          from '../models/User.js';
 
 // Passport Local Strategy
 
-passport.use(new LocalStrategy({ usernameField: 'email' },
-  async (email, password, done) => {
+passport.use(new LocalStrategy({ usernameField: 'username' },
+  async (username, password, done) => {
     try {
-      const user = await User.findOne({ email });
+
+      const user = await User.findOne({ username });
       if (!user) return done(null, false, { message: 'User not found' });
 
       const match = await bcrypt.compare(password, user.password);
-      if (!match) return done(null, false, { message: 'Wrong password' });
 
+      if (!match) return done(null, false, { message: 'Wrong password' });
       return done(null, user);
+
     } catch (err) {
       return done(err);
     }
