@@ -37,8 +37,7 @@ router.put('/:id', protect, async (req, res) => {
       req.params.id,
       {
         notes: req.body.notes
-      },
-      {new: true}
+      }
     );
 
     if (!updated) {
