@@ -57,7 +57,7 @@ router.get('/auth/me', protect, async(req, res)=>{
 });
 
 //Temp Test routes for login
-router.get('/auth/profile', async (req, res) => {
+router.get('/auth/home', async (req, res) => {
   res.send('Welcome to your profile page');
 });
 
