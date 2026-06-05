@@ -11,7 +11,7 @@ function Wishlist() {
   }, []);
 
   async function fetchWishlist() {
-    const res = await fetch("http://localhost:5000/api/wishlist", {
+    const res = await fetch("http://localhost:3000/api/wishlist", {
       credentials: "include",
     });
 
@@ -20,7 +20,7 @@ function Wishlist() {
   }
 
   async function removeItem(id) {
-    await fetch(`http://localhost:5000/api/wishlist/${id}`, {
+    await fetch(`http://localhost:3000/api/wishlist/${id}`, {
       method: "DELETE",
       credentials: "include",
     });

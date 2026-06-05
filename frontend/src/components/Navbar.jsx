@@ -8,11 +8,12 @@ function Navbar() {
   const user = JSON.parse(localStorage.getItem("user"));
 
   async function handleLogout() {
-    await fetch("http://localhost:5000/api/auth/logout", {
+    await fetch("http://localhost:3000/api/auth/logout", {
       credentials: "include",
     });
 
     localStorage.removeItem("user");
+    localStorage.removeItem("token");
     navigate("/login");
   }
 

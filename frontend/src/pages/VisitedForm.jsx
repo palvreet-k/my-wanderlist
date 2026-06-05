@@ -30,8 +30,8 @@ function VisitedForm() {
 
     try {
       const url = existing
-        ? `http://localhost:5000/api/visited/${existing._id}`
-        : "http://localhost:5000/api/visited";
+        ? `http://localhost:3000/api/visited/${existing._id}`
+        : "http://localhost:3000/api/visited";
 
       const method = existing ? "PUT" : "POST";
 

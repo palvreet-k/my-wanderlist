@@ -13,7 +13,7 @@ function Visited() {
 
   async function fetchVisited() {
     try {
-      const res = await fetch("http://localhost:5000/api/visited", {
+      const res = await fetch("http://localhost:3000/api/visited", {
         credentials: "include",
       });
 
@@ -26,7 +26,7 @@ function Visited() {
 
   async function deleteItem(id) {
     try {
-      await fetch(`http://localhost:5000/api/visited/${id}`, {
+      await fetch(`http://localhost:3000/api/visited/${id}`, {
         method: "DELETE",
         credentials: "include",
       });

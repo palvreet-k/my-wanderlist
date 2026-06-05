@@ -31,8 +31,8 @@ function WishlistForm() {
 
     try {
       const url = existing
-        ? `http://localhost:5000/api/wishlist/${existing._id}`
-        : "http://localhost:5000/api/wishlist";
+        ? `http://localhost:3000/api/wishlist/${existing._id}`
+        : "http://localhost:3000/api/wishlist";
 
       const method = existing ? "PUT" : "POST";
 

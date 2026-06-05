@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
 
 import Navbar from "./components/Navbar.jsx";
 
@@ -13,31 +13,43 @@ import WishlistForm from "./pages/WishlistForm.jsx";
 import Visited from "./pages/Visited.jsx";
 import VisitedForm from "./pages/VisitedForm.jsx";
 
+// Renders the Navbar + page only when logged in; otherwise sends to /login
+function ProtectedLayout() {
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    return <Navigate to="/login" replace />;
+  }
+
+  return (
+    <>
+      <Navbar />
+      <Outlet />
+    </>
+  );
+}
+
 function App() {
   return (
     <BrowserRouter>
-
-      <Navbar />
-
       <Routes>
-        <Route path="/" element={<Home />} />
-
-        {/* Auth */}
+        {/* Public auth routes (no navbar) */}
         <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<RegisterForm />} />
 
-        {/* Country */}
-        <Route path="/country/:name" element={<CountryDetails />} />
+        {/* Protected routes (with navbar) */}
+        <Route element={<ProtectedLayout />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/country/:name" element={<CountryDetails />} />
+          <Route path="/wishlist" element={<Wishlist />} />
+          <Route path="/wishlist-form/:name" element={<WishlistForm />} />
+          <Route path="/visited" element={<Visited />} />
+          <Route path="/visited-form" element={<VisitedForm />} />
+        </Route>
 
-        {/* Wishlist */}
-        <Route path="/wishlist" element={<Wishlist />} />
-        <Route path="/wishlist-form/:name" element={<WishlistForm />} />
-
-        {/* Visited */}
-        <Route path="/visited" element={<Visited />} />
-        <Route path="/visited-form" element={<VisitedForm />} />
+        {/* Anything else -> login */}
+        <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
-
     </BrowserRouter>
   );
 }
