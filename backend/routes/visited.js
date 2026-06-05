@@ -5,26 +5,25 @@ import protect from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// GET /api/visited
+// GET /api/visited - all visited countries for the logged-in user
 router.get('/', protect, async (req, res) => {
   try {
-    const items = await Visited.find({ userId: req.user._id });
+    const items = await Visited.find({ userId: req.user._id }).sort({ createdAt: -1 });
     res.json(items);
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
 
-// POST /api/visited
+// POST /api/visited - add a visited country
 router.post('/', protect, async (req, res) => {
-   try {
+  try {
     const newVisited = await Visited.create({
-      userId: req.body.userId,
-      countryId: req.body.countryId,
-      visited: req.body.visited ?? false,
-      visitDate: req.body.visitDate,
-      rating: req.body.rating,
-      notes: req.body.notes
+      userId:    req.user._id,
+      country:   req.body.country,
+      visitDate: req.body.visitDate || null,
+      rating:    req.body.rating || null,
+      notes:     req.body.notes
     });
 
     res.status(201).json({
@@ -34,17 +33,21 @@ router.post('/', protect, async (req, res) => {
 
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Error creating visited record' });
+    res.status(500).json({ message: 'Error creating visited record', error: err.message });
   }
 });
 
-// PUT /api/visited/:id
+// PUT /api/visited/:id - update one of the user's visited records
 router.put('/:id', protect, async (req, res) => {
   try {
-    const updated = await Visited.findByIdAndUpdate(
-      req.params.id,
-      {  visitDate: req.body.visitDate,
-        notes: req.body.notes }
+    const updated = await Visited.findOneAndUpdate(
+      { _id: req.params.id, userId: req.user._id },
+      {
+        visitDate: req.body.visitDate || null,
+        rating:    req.body.rating || null,
+        notes:     req.body.notes
+      },
+      { new: true }
     );
 
     if (!updated) {
@@ -58,17 +61,20 @@ router.put('/:id', protect, async (req, res) => {
 
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Error updating notes' });
+    res.status(500).json({ message: 'Error updating notes', error: err.message });
   }
 });
 
-// DELETE /api/visited/:id
+// DELETE /api/visited/:id - remove one of the user's visited records
 router.delete('/:id', protect, async (req, res) => {
-  try{
-    const deleted = await Visited.findByIdAndDelete(req.params.id);
+  try {
+    const deleted = await Visited.findOneAndDelete({
+      _id: req.params.id,
+      userId: req.user._id
+    });
 
-    if(!deleted){
-      return res.status(404).json('Visited country record not found')
+    if (!deleted) {
+      return res.status(404).json('Visited country record not found');
     }
     res.json({
       message: 'Visited record deleted successfully',
@@ -77,7 +83,7 @@ router.delete('/:id', protect, async (req, res) => {
 
   } catch (err) {
     console.error(err);
-    res.status(500).json({ message: 'Error deleting visited record' });
+    res.status(500).json({ message: 'Error deleting visited record', error: err.message });
   }
 });
 

@@ -13,8 +13,10 @@ function Visited() {
 
   async function fetchVisited() {
     try {
+      const token = localStorage.getItem("token");
+
       const res = await fetch("http://localhost:3000/api/visited", {
-        credentials: "include",
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       const data = await res.json();
@@ -26,15 +28,23 @@ function Visited() {
 
   async function deleteItem(id) {
     try {
+      const token = localStorage.getItem("token");
+
       await fetch(`http://localhost:3000/api/visited/${id}`, {
         method: "DELETE",
-        credentials: "include",
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       setVisited((prev) => prev.filter((item) => item._id !== id));
     } catch (err) {
       console.error("Delete failed:", err);
     }
+  }
+
+  // ISO date string -> readable local date
+  function formatDate(value) {
+    if (!value) return "—";
+    return new Date(value).toLocaleDateString();
   }
 
   return (
@@ -48,9 +58,7 @@ function Visited() {
           <div
             key={item._id}
             onClick={() =>
-              setExpandedId(
-                expandedId === item._id ? null : item._id
-              )
+              setExpandedId(expandedId === item._id ? null : item._id)
             }
             style={{
               border: "1px solid #ddd",
@@ -64,15 +72,15 @@ function Visited() {
             <h2 style={{ margin: 0 }}>{item.country}</h2>
 
             <p style={{ fontSize: "12px", color: "gray" }}>
-              ⭐ Rating: {item.rating}/5
+              ⭐ Rating: {item.rating ? `${item.rating}/5` : "Not rated"}
             </p>
 
             {/* EXPANDED SECTION */}
             {expandedId === item._id && (
               <div style={{ marginTop: "10px" }}>
-                <p>📅 Visit Date: {item.visitDate}</p>
-                <p>⭐ Rating: {item.rating}</p>
-                <p>📝 Notes: {item.notes}</p>
+                <p>📅 Visit Date: {formatDate(item.visitDate)}</p>
+                <p>⭐ Rating: {item.rating ? `${item.rating}/5` : "—"}</p>
+                <p>📝 Notes: {item.notes || "—"}</p>
 
                 {/* UPDATE */}
                 <button
