@@ -5,39 +5,44 @@ import protect from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-// GET /api/wishlist
+// GET /api/wishlist - all items for the logged-in user
 router.get('/', protect, async (req, res) => {
   try {
-    const items = await Wishlist.find({ userId: req.user._id });
+    const items = await Wishlist.find({ userId: req.user._id }).sort({ createdAt: -1 });
     res.json(items);
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
 
-// POST /api/wishlist
+// POST /api/wishlist - add a country to the user's wishlist
 router.post('/', protect, async (req, res) => {
-   try {
+  try {
     const item = await Wishlist.create({
-      userId: req.body.userId,
-      countryId: req.body.countryId,
-      notes: req.body.notes
+      userId:   req.user._id,
+      country:  req.body.country,
+      bestTime: req.body.bestTime,
+      budget:   req.body.budget,
+      notes:    req.body.notes
     });
 
     res.status(201).json(item);
   } catch (err) {
-    res.status(500).json({ message: 'Create failed' });
+    res.status(500).json({ message: 'Create failed', error: err.message });
   }
 });
 
-// PUT /api/wishlist/:id
+// PUT /api/wishlist/:id - update one of the user's wishlist items
 router.put('/:id', protect, async (req, res) => {
   try {
-    const updated = await Wishlist.findByIdAndUpdate(
-      req.params.id,
+    const updated = await Wishlist.findOneAndUpdate(
+      { _id: req.params.id, userId: req.user._id },
       {
-        notes: req.body.notes
-      }
+        bestTime: req.body.bestTime,
+        budget:   req.body.budget,
+        notes:    req.body.notes
+      },
+      { new: true }
     );
 
     if (!updated) {
@@ -46,14 +51,17 @@ router.put('/:id', protect, async (req, res) => {
 
     res.json(updated);
   } catch (err) {
-    res.status(500).json({ message: 'Update failed' });
+    res.status(500).json({ message: 'Update failed', error: err.message });
   }
 });
 
-// DELETE /api/wishlist/:id
+// DELETE /api/wishlist/:id - remove one of the user's wishlist items
 router.delete('/:id', protect, async (req, res) => {
   try {
-    const deleted = await Wishlist.findByIdAndDelete(req.params.id);
+    const deleted = await Wishlist.findOneAndDelete({
+      _id: req.params.id,
+      userId: req.user._id
+    });
 
     if (!deleted) {
       return res.status(404).json({ message: 'Not found' });
@@ -61,7 +69,7 @@ router.delete('/:id', protect, async (req, res) => {
 
     res.json({ message: 'Deleted successfully', data: deleted });
   } catch (err) {
-    res.status(500).json({ message: 'Delete failed' });
+    res.status(500).json({ message: 'Delete failed', error: err.message });
   }
 });
 

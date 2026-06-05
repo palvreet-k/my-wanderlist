@@ -4,14 +4,10 @@ import { Link, useNavigate } from "react-router-dom";
 function Navbar() {
   const navigate = useNavigate();
 
-  // You can later replace this with real auth user from backend/context
   const user = JSON.parse(localStorage.getItem("user"));
 
-  async function handleLogout() {
-    await fetch("http://localhost:3000/api/auth/logout", {
-      credentials: "include",
-    });
-
+  function handleLogout() {
+    // Drop JWT token and user info (welcome tag)at logout
     localStorage.removeItem("user");
     localStorage.removeItem("token");
     navigate("/login");

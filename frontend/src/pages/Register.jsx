@@ -61,11 +61,8 @@ function RegisterForm() {
         throw new Error(data.message || 'Registration failed');
       }
 
-      // Registration logs you in: store the JWT and user, then go to Home
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
-
-      navigate('/');
+      // Registration success - navigate to login
+      navigate('/login');
     } catch (err) {
       setServerError(err.message);
     } finally {
