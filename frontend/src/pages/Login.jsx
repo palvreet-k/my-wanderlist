@@ -1,13 +1,15 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import RegisterForm from './Register';
+import { Link, useNavigate } from 'react-router-dom';
 
 function LoginForm() {
+  const navigate = useNavigate();
+
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
 
   const [errors, setErrors] = useState({});
-  const [submitted, setSubmitted] = useState(false);
+  const [serverError, setServerError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   function validate() {
     let newErrors = {};
@@ -30,24 +32,39 @@ function LoginForm() {
     return isValid;
   }
 
-  const handleSubmit = (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
+    setServerError('');
 
-    if (validate()) {
-      setSubmitted(true);
+    if (!validate()) return;
+
+    setLoading(true);
+    try {
+      const res = await fetch('http://localhost:5000/api/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username: name, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || 'Login failed');
+      }
+
+      // Store the JWT and user, then go to Home
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+
+      navigate('/');
+    } catch (err) {
+      setServerError(err.message);
+    } finally {
+      setLoading(false);
     }
-  };
-
-  const canSubmit = name && password;
-
-  if (submitted) {
-    return (
-      <div>
-        <h2>Login Successful</h2>
-        <p>Welcome, {name}!</p>
-      </div>
-    );
   }
+
+  const canSubmit = name && password && !loading;
 
   return (
     <div>
@@ -83,13 +100,17 @@ function LoginForm() {
         <br />
         <br />
 
+        {serverError && (
+          <p style={{ color: 'red' }}>{serverError}</p>
+        )}
+
         <button type="submit" disabled={!canSubmit}>
-          Login
+          {loading ? 'Logging in...' : 'Login'}
         </button>
 
         <p>
-            Don't have an account?{' '}
-            <Link to="/register">Register</Link>
+          Don't have an account?{' '}
+          <Link to="/register">Register</Link>
         </p>
       </form>
     </div>

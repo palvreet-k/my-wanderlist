@@ -4,8 +4,6 @@ import express from 'express';
 import cors from 'cors';
 import mongoose from 'mongoose';
 import passport from './middleware/passport.js';
-import session from 'express-session';
-import MongoStore from 'connect-mongo';
 import authRoutes from './routes/auth.js';
 import wishlistRoutes from './routes/wishlist.js';
 import visitedRoutes from './routes/visited.js';
@@ -15,15 +13,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.use(session({
-  secret:            "secret",
-  resave:            false,
-  saveUninitialized: false,
-  store:             MongoStore.create({ mongoUrl: process.env.MONGO_URI })
-}));
-
 app.use(passport.initialize());
-app.use(passport.session());
 
 // Routes
 // app.use('/api/auth', require('./routes/auth'));

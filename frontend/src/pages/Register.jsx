@@ -1,20 +1,23 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 function RegisterForm() {
-  const [name, setName] = useState('');
+  const navigate = useNavigate();
+
+  const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const [errors, setErrors] = useState({});
-  const [submitted, setSubmitted] = useState(false);
+  const [serverError, setServerError] = useState('');
+  const [loading, setLoading] = useState(false);
 
   function validate() {
     let newErrors = {};
     let isValid = true;
 
-    if (!name.trim()) {
-      newErrors.name = 'Name is required';
+    if (!username.trim()) {
+      newErrors.username = 'Username is required';
       isValid = false;
     }
 
@@ -38,40 +41,55 @@ function RegisterForm() {
     return isValid;
   }
 
-  const handleSubmit = (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
+    setServerError('');
 
-    if (validate()) {
-      setSubmitted(true);
+    if (!validate()) return;
+
+    setLoading(true);
+    try {
+      const res = await fetch('http://localhost:5000/api/auth/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, email, password }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.message || 'Registration failed');
+      }
+
+      // Registration logs you in: store the JWT and user, then go to Home
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+
+      navigate('/');
+    } catch (err) {
+      setServerError(err.message);
+    } finally {
+      setLoading(false);
     }
-  };
-
-  const canSubmit = name && email && password;
-
-  if (submitted) {
-    return (
-      <div>
-        <h2>Registration Successful</h2>
-        <p>Welcome, {name}! Your account has been created.</p>
-      </div>
-    );
   }
+
+  const canSubmit = username && email && password && !loading;
 
   return (
     <div>
       <h2>Register Form</h2>
 
       <form onSubmit={handleSubmit}>
-        <label htmlFor="name">Name</label>
+        <label htmlFor="username">Username</label>
         <br />
         <input
-          id="name"
+          id="username"
           type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
         />
-        {errors.name && (
-          <p style={{ color: 'red' }}>{errors.name}</p>
+        {errors.username && (
+          <p style={{ color: 'red' }}>{errors.username}</p>
         )}
 
         <br />
@@ -105,12 +123,17 @@ function RegisterForm() {
         <br />
         <br />
 
+        {serverError && (
+          <p style={{ color: 'red' }}>{serverError}</p>
+        )}
+
         <button type="submit" disabled={!canSubmit}>
-          Register
+          {loading ? 'Creating account...' : 'Register'}
         </button>
+
         <p>
-        Already have an account?{' '}
-        <Link to="/login">Login</Link>
+          Already have an account?{' '}
+          <Link to="/login">Login</Link>
         </p>
       </form>
     </div>

@@ -1,6 +1,6 @@
-const protect = (req, res, next) => {
-  if (req.isAuthenticated()) return next();
-  res.status(401).json({ message: 'Please log in to access this page' });
-};
+import passport from 'passport';
+
+// Verifies the JWT Bearer token and sets req.user. No sessions.
+const protect = passport.authenticate('jwt', { session: false });
 
 export default protect;

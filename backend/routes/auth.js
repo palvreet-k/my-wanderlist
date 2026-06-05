@@ -1,87 +1,72 @@
 // routes/auth.js
-// POST /api/auth/register  - hash password, create user
-// POST /api/auth/login     - passport.authenticate('local')
-// GET  /api/auth/logout    - req.logout()
-// GET  /api/auth/me        - return req.user
-
-
+// POST /api/auth/register - hash password, create user, return a JWT
+// POST /api/auth/login    - verify password with bcrypt, return a JWT
+// GET  /api/auth/logout   - client drops the token (no server session)
+// GET  /api/auth/me       - return the authenticated user
 
 import express from 'express';
-import passport from 'passport';
+import jwt from 'jsonwebtoken';
 import bcrypt from 'bcrypt';
 import User from '../models/User.js';
 import protect from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
-//Auth endpoints
+// POST /api/auth/register
+router.post('/auth/register', async (req, res) => {
+  try {
+    const { username, email, password } = req.body;
 
-router.post('/auth/register', async(req, res) =>{ 
-  try{
+    const existing = await User.findOne({ $or: [{ email }, { username }] });
+    if (existing) {
+      return res.status(400).json({ message: 'Username or email already in use' });
+    }
 
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    await User.create({
-      email: req.body.email,
-      username: req.body.username,
-      password: hashedPassword,
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await User.create({ username, email, password: hashedPassword });
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    res.status(201).json({
+      token,
+      user: { id: user._id, username: user.username, email: user.email }
     });
-    res.send('User Registeration success')
-    // res.render('/auth/login');
-  }
-  catch(err){
-    console.error(err)
-    res.status(500).send('User Registeration error')
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Registration failed', error: err.message });
   }
 });
 
-router.post("/auth/login", passport.authenticate('local', {
-  successRedirect: "/api/auth/profile", 
-  failureRedirect: "/api/auth/crash"
-}));
+// POST /api/auth/login
+router.post('/auth/login', async (req, res) => {
+  try {
+    const { username, password } = req.body;
 
-router.get('/auth/logout', (req, res, next) => {
-  req.logout(err => {
-    if (err) return next(err);
+    const user = await User.findOne({ username });
+    if (!user) return res.status(401).json({ message: 'Invalid username or password' });
 
-    req.session.destroy(() => {
-      res.json({ message: "Logged out successfully" });
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) return res.status(401).json({ message: 'Invalid username or password' });
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    res.json({
+      token,
+      user: { id: user._id, username: user.username, email: user.email }
     });
-  });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Login failed', error: err.message });
+  }
 });
 
-router.get('/auth/me', protect, async(req, res)=>{
-  if(!req.user){
-    return res.status(401).json({message: 'Not authenticated'});
-  }
+// GET /api/auth/logout - with JWT there is no server session to destroy;
+// the client just deletes its stored token. Kept for frontend convenience.
+router.get('/auth/logout', (req, res) => {
+  res.json({ message: 'Logged out successfully' });
+});
+
+// GET /api/auth/me - returns the authenticated user (req.user set by JWT strategy)
+router.get('/auth/me', protect, (req, res) => {
   res.json(req.user);
-});
-
-//Temp Test routes for login
-router.get('/auth/home', async (req, res) => {
-  res.send('Welcome to your profile page');
-});
-
-router.get('/auth/crash', async (req, res) => {
-  res.send('OOps crash');
-});
-
-// OAuth Specific Endpoints- For testing only
-// Go to /api/auth/myauth
-// Login with Google
-// You see a message with you name
-
-router.get('/auth/myoauth', async (req, res) => {
-  res.send('<a href="/auth/google">Login with Google</a>');
-});
-
-router.get('/auth/google', 
-    passport.authenticate("google", {scope: ["profile", "email"]}));
-
-router.get('/auth/google/callback', passport.authenticate("google", {failureRedirect:"/"}), 
-    (req, res)=> {res.redirect('/googlewelcome')});
-
-router.get('/googlewelcome', async (req, res) => {
-  res.send(`Welcome ${req.user.displayName}`);
 });
 
 export default router;
