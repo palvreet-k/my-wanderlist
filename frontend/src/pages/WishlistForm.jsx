@@ -1,12 +1,15 @@
 import React, { useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 
+const BEST_TIME_OPTIONS = ["Jan – Mar", "Apr – Jun", "Jul – Sep", "Oct – Dec"];
+const BUDGET_OPTIONS = ["<500", "1000", "1500", "2000", "3000", "5000+"];
+
 function WishlistForm() {
   const { name } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
 
-  const existing = location.state; // 👈 edit mode data
+  const existing = location.state; // edit mode data (from Wishlist page)
 
   const [form, setForm] = useState({
     bestTime: existing?.bestTime || "",
@@ -30,6 +33,8 @@ function WishlistForm() {
     setError("");
 
     try {
+      const token = localStorage.getItem("token");
+
       const url = existing
         ? `http://localhost:3000/api/wishlist/${existing._id}`
         : "http://localhost:3000/api/wishlist";
@@ -40,8 +45,8 @@ function WishlistForm() {
         method,
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        credentials: "include",
         body: JSON.stringify({
           country: existing?.country || name,
           ...form,
@@ -66,28 +71,36 @@ function WishlistForm() {
       <h3>🌍 {existing?.country || name}</h3>
 
       <form onSubmit={handleSubmit}>
-        <input
-          name="bestTime"
-          placeholder="Best time to visit"
-          value={form.bestTime}
-          onChange={handleChange}
-        />
-
-        <br /><br />
-
-        <select
-          name="budget"
-          value={form.budget}
-          onChange={handleChange}
-        >
-          <option value="">Select budget</option>
-          <option value="Low">Low</option>
-          <option value="Medium">Medium</option>
-          <option value="High">High</option>
+        <label>Best time to visit</label>
+        <br />
+        <select name="bestTime" value={form.bestTime} onChange={handleChange}>
+          <option value="">Select best time</option>
+          {BEST_TIME_OPTIONS.map((opt) => (
+            <option key={opt} value={opt}>
+              {opt}
+            </option>
+          ))}
         </select>
 
-        <br /><br />
+        <br />
+        <br />
 
+        <label>Budget (USD)</label>
+        <br />
+        <select name="budget" value={form.budget} onChange={handleChange}>
+          <option value="">Select budget</option>
+          {BUDGET_OPTIONS.map((opt) => (
+            <option key={opt} value={opt}>
+              {opt}
+            </option>
+          ))}
+        </select>
+
+        <br />
+        <br />
+
+        <label>Notes</label>
+        <br />
         <textarea
           name="notes"
           placeholder="Notes"
@@ -95,7 +108,8 @@ function WishlistForm() {
           onChange={handleChange}
         />
 
-        <br /><br />
+        <br />
+        <br />
 
         {error && <p style={{ color: "red" }}>{error}</p>}
 
