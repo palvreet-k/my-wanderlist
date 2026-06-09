@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import '../styles/Login.css';
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -67,52 +68,47 @@ function LoginForm() {
   const canSubmit = name && password && !loading;
 
   return (
-    <div>
-      <h2>Login Form</h2>
+    <div className="auth-page">
+      <div className="auth-card">
+        <h2 className="auth-title">WanderList 🌍</h2>
+        <p className="auth-subtitle">Welcome back, traveler!</p>
 
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="username">Username</label>
-        <br />
-        <input
-          id="username"
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-        />
-        {errors.name && (
-          <p style={{ color: 'red' }}>{errors.name}</p>
-        )}
+        <form className="auth-form" onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="username">Username</label>
+            <input
+              id="username"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            {errors.name && <p className="field-error">{errors.name}</p>}
+          </div>
 
-        <br />
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            {errors.password && (
+              <p className="field-error">{errors.password}</p>
+            )}
+          </div>
 
-        <label htmlFor="password">Password</label>
-        <br />
-        <input
-          id="password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        {errors.password && (
-          <p style={{ color: 'red' }}>{errors.password}</p>
-        )}
+          {serverError && <p className="server-error">{serverError}</p>}
 
-        <br />
-        <br />
+          <button className="auth-button" type="submit" disabled={!canSubmit}>
+            {loading ? 'Logging in...' : 'Login'}
+          </button>
 
-        {serverError && (
-          <p style={{ color: 'red' }}>{serverError}</p>
-        )}
-
-        <button type="submit" disabled={!canSubmit}>
-          {loading ? 'Logging in...' : 'Login'}
-        </button>
-
-        <p>
-          Don't have an account?{' '}
-          <Link to="/register">Register</Link>
-        </p>
-      </form>
+          <p className="auth-footer">
+            Don't have an account? <Link to="/register">Register</Link>
+          </p>
+        </form>
+      </div>
     </div>
   );
 }

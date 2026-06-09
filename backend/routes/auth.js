@@ -58,13 +58,12 @@ router.post('/auth/login', async (req, res) => {
   }
 });
 
-// GET /api/auth/logout - with JWT there is no server session to destroy;
-// the client just deletes its stored token. Kept for frontend convenience.
+// GET /api/auth/logout 
 router.get('/auth/logout', (req, res) => {
   res.json({ message: 'Logged out successfully' });
 });
 
-// GET /api/auth/me - returns the authenticated user (req.user set by JWT strategy)
+// GET /api/auth/me
 router.get('/auth/me', protect, (req, res) => {
   res.json(req.user);
 });

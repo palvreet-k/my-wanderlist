@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 
 function CountryDetail() {
@@ -39,71 +39,65 @@ function CountryDetail() {
 
   if (error) {
     return (
-      <div style={{ padding: "20px", color: "red" }}>
-        <Link to="/">← Back</Link>
-        <p>{error}</p>
+      <div className="app-page is-centered">
+        <Link to="/" className="back-link">← Back</Link>
+        <p className="error-text">{error}</p>
       </div>
     );
   }
 
-  if (!country) return <p>Loading...</p>;
+  if (!country) return <p className="app-page muted">Loading...</p>;
 
   return (
-    <div style={{ padding: "20px" }}>
-      <Link to="/">← Back</Link>
+    <div className="app-page is-centered">
+      <Link to="/" className="back-link">← Back</Link>
 
-      <h1>{country.name.common}</h1>
+      <div className="card">
+        <h1 className="page-title" style={{ marginBottom: "8px" }}>
+          {country.name.common}
+        </h1>
 
-      {/* 🇨🇦 FLAG */}
-      <img
-        src={country.flags?.png}
-        alt={country.name?.common}
-        style={{ width: "200px", marginTop: "10px" }}
-      />
+        <img
+          className="detail-flag"
+          src={country.flags?.png}
+          alt={country.name?.common}
+        />
 
-      <p><b>Capital:</b> {country.capital?.[0] || "N/A"}</p>
-      <p><b>Region:</b> {country.region || "N/A"}</p>
-      <p>
-        <b>Population:</b>{" "}
-        {country.population?.toLocaleString() || "N/A"}
-      </p>
-      <p>
-        <b>Currency:</b>{" "}
-        {country.currencies
-          ? Object.keys(country.currencies).join(", ")
-          : "N/A"}
-      </p>
+        <div className="detail-info">
+          <p><b>Capital:</b> {country.capital?.[0] || "N/A"}</p>
+          <p><b>Region:</b> {country.region || "N/A"}</p>
+          <p>
+            <b>Population:</b>{" "}
+            {country.population?.toLocaleString() || "N/A"}
+          </p>
+          <p>
+            <b>Currency:</b>{" "}
+            {country.currencies
+              ? Object.keys(country.currencies).join(", ")
+              : "N/A"}
+          </p>
+        </div>
 
-      {/* ⭐ ACTIONS */}
-      <div style={{ marginTop: "20px" }}>
-        <button
-          onClick={() =>
-            navigate(`/wishlist-form/${country.name.common}`)
-          }
-          style={{
-            padding: "10px",
-            marginRight: "10px",
-            cursor: "pointer",
-          }}
-        >
-          ⭐ Add to Wishlist
-        </button>
+        {/* Actions */}
+        <div className="list-actions">
+          <button
+            className="btn btn-primary"
+            onClick={() => navigate(`/wishlist-form/${country.name.common}`)}
+          >
+            ⭐ Add to Wishlist
+          </button>
 
-        <button
-          onClick={() =>
-            navigate("/visited-form", {
-              state: {
-                country: country.name.common,
-              },
-            })
-          }
-          style={{
-            padding: "10px",
-            cursor: "pointer",
-          }}
-        >
-          ✅ Add to Visited
-        </button>
+          <button
+            className="btn btn-secondary"
+            onClick={() =>
+              navigate("/visited-form", {
+                state: { country: country.name.common },
+              })
+            }
+          >
+            ✅ Add to Visited
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Home() {
@@ -10,13 +10,13 @@ function Home() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (search.length <= 2) {
-      setCountries([]);
-      setError("");
-      return;
-    }
-
     const fetchCountries = async () => {
+      if (search.length <= 2) {
+        setCountries([]);
+        setError("");
+        return;
+      }
+
       setLoading(true);
       setError("");
 
@@ -49,70 +49,61 @@ function Home() {
   }, [search]);
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>🌍 Country Search</h1>
+    <div className="app-page is-centered">
+      <h1 className="page-title">🌍 Where to next?</h1>
 
       <input
+        className="search-input"
         type="text"
-        placeholder="Search country..."
+        placeholder="Search a country..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        style={{ padding: "10px", width: "300px" }}
       />
 
-      {/* 🔵 INFO MESSAGE */}
-      {search.length <= 3 && (
-        <p>Type at least 4 letters to search...</p>
+      {search.length <= 2 && (
+        <p className="muted" style={{ marginTop: "12px" }}>
+          Type at least 3 letters to search...
+        </p>
       )}
 
-      {/* 🔴 ERROR MESSAGE */}
       {error && (
-        <p style={{ color: "red" }}>{error}</p>
+        <p className="error-text" style={{ marginTop: "12px" }}>
+          {error}
+        </p>
       )}
 
-      {/* 🟡 LOADING */}
-      {loading && <p>Loading...</p>}
+      {loading && (
+        <p className="muted" style={{ marginTop: "12px" }}>
+          Loading...
+        </p>
+      )}
 
-      {/* 🌍 RESULTS */}
       {!loading &&
         !error &&
         search.length > 3 &&
         countries.length === 0 && (
-          <p>No matching countries found</p>
+          <p className="muted" style={{ marginTop: "12px" }}>
+            No matching countries found
+          </p>
         )}
 
       {countries.map((country, index) => (
         <div
           key={country.name.common || index}
-          onClick={() =>
-            navigate(`/country/${country.name.common}`)
-          }
-          style={{
-            border: "1px solid #ddd",
-            padding: "10px",
-            marginTop: "10px",
-            cursor: "pointer",
-            borderRadius: "8px",
-            display: "flex",
-            alignItems: "center",
-            gap: "15px",
-          }}
+          className="card result-card"
+          onClick={() => navigate(`/country/${country.name.common}`)}
         >
-          {/* 🇨🇦 FLAG */}
           <img
+            className="result-flag"
             src={country.flags?.png}
             alt={country.name?.common}
-            style={{ width: "50px", height: "30px" }}
           />
 
-          <div>
-            <h3>{country.name?.common}</h3>
-            <p>
-              Capital: {country.capital?.[0] || "N/A"}
-            </p>
-            <p>
-              Region: {country.region || "N/A"}
-            </p>
+          <h3 className="result-name">{country.name?.common}</h3>
+
+          <div className="result-meta">
+            <p><b>Capital:</b> {country.capital?.[0] || "N/A"}</p>
+            <p><b>Region:</b> {country.region || "N/A"}</p>
           </div>
         </div>
       ))}

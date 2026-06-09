@@ -1,5 +1,6 @@
-import React from "react";
 import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom";
+
+import "./styles/app.css";
 
 import Navbar from "./components/Navbar.jsx";
 
@@ -33,11 +34,9 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        {/* Public auth routes (no navbar) */}
         <Route path="/login" element={<LoginForm />} />
         <Route path="/register" element={<RegisterForm />} />
 
-        {/* Protected routes (with navbar) */}
         <Route element={<ProtectedLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/country/:name" element={<CountryDetails />} />
@@ -47,7 +46,6 @@ function App() {
           <Route path="/visited-form" element={<VisitedForm />} />
         </Route>
 
-        {/* Anything else -> login */}
         <Route path="*" element={<Navigate to="/login" replace />} />
       </Routes>
     </BrowserRouter>

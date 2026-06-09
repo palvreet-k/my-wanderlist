@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 
 function Visited() {
   const [visited, setVisited] = useState([]);
@@ -8,23 +8,23 @@ function Visited() {
   const navigate = useNavigate();
 
   useEffect(() => {
+    async function fetchVisited() {
+      try {
+        const token = localStorage.getItem("token");
+
+        const res = await fetch("http://localhost:3000/api/visited", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const data = await res.json();
+        setVisited(data);
+      } catch (err) {
+        console.error("Error fetching visited:", err);
+      }
+    }
+
     fetchVisited();
   }, []);
-
-  async function fetchVisited() {
-    try {
-      const token = localStorage.getItem("token");
-
-      const res = await fetch("http://localhost:3000/api/visited", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      const data = await res.json();
-      setVisited(data);
-    } catch (err) {
-      console.error("Error fetching visited:", err);
-    }
-  }
 
   async function deleteItem(id) {
     try {
@@ -41,71 +41,69 @@ function Visited() {
     }
   }
 
-  // ISO date string -> readable local date
+  // Convert Date to readable local date
   function formatDate(value) {
     if (!value) return "—";
     return new Date(value).toLocaleDateString();
   }
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h1>✅ Visited Countries</h1>
+    <div className="app-page">
+      <h1 className="page-title" style={{ textAlign: "center" }}>✅ Visited Countries</h1>
 
       {visited.length === 0 ? (
-        <p>No visited countries yet</p>
+        <div className="empty-state">
+          <p>No trips logged yet — your travel journal is waiting.</p>
+          <Link to="/" className="btn btn-primary">
+            🌍 Find a country
+          </Link>
+        </div>
       ) : (
         visited.map((item) => (
           <div
             key={item._id}
+            className="card list-item"
             onClick={() =>
               setExpandedId(expandedId === item._id ? null : item._id)
             }
-            style={{
-              border: "1px solid #ddd",
-              marginBottom: "10px",
-              padding: "12px",
-              borderRadius: "8px",
-              cursor: "pointer",
-            }}
           >
-            {/* HEADER */}
-            <h2 style={{ margin: 0 }}>{item.country}</h2>
-
-            <p style={{ fontSize: "12px", color: "gray" }}>
+            {/* Header */}
+            <h2>{item.country}</h2>
+            <p className="list-meta">
               ⭐ Rating: {item.rating ? `${item.rating}/5` : "Not rated"}
             </p>
 
-            {/* EXPANDED SECTION */}
+            {/* Expanded */}
             {expandedId === item._id && (
-              <div style={{ marginTop: "10px" }}>
-                <p>📅 Visit Date: {formatDate(item.visitDate)}</p>
-                <p>⭐ Rating: {item.rating ? `${item.rating}/5` : "—"}</p>
-                <p>📝 Notes: {item.notes || "—"}</p>
+              <>
+                <div className="list-detail">
+                  <span>📅 Visit Date: {formatDate(item.visitDate)}</span>
+                  <span>⭐ Rating: {item.rating ? `${item.rating}/5` : "—"}</span>
+                  <span>📝 Notes: {item.notes || "—"}</span>
+                </div>
 
-                {/* UPDATE */}
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    navigate(`/visited-form`, {
-                      state: item,
-                    });
-                  }}
-                  style={{ marginRight: "10px" }}
-                >
-                  ✏️ Update
-                </button>
+                <div className="list-actions">
+                  <button
+                    className="btn btn-primary"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      navigate(`/visited-form`, { state: item });
+                    }}
+                  >
+                    ✏️ Update
+                  </button>
 
-                {/* DELETE */}
-                <button
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    deleteItem(item._id);
-                  }}
-                  style={{ color: "red" }}
-                >
-                  ❌ Remove
-                </button>
-              </div>
+                  <button
+                    className="btn btn-danger"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      deleteItem(item._id);
+                    }}
+                  >
+                    ❌ Remove
+                  </button>
+                </div>
+              </>
             )}
           </div>
         ))

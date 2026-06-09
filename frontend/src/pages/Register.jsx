@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import '../styles/Login.css';
 
 function RegisterForm() {
   const navigate = useNavigate();
@@ -73,66 +74,60 @@ function RegisterForm() {
   const canSubmit = username && email && password && !loading;
 
   return (
-    <div>
-      <h2>Register Form</h2>
+    <div className="auth-page">
+      <div className="auth-card">
+        <h2 className="auth-title">WanderList 🌍</h2>
+        <p className="auth-subtitle">Let's plan your next trip!</p>
 
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="username">Username</label>
-        <br />
-        <input
-          id="username"
-          type="text"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-        />
-        {errors.username && (
-          <p style={{ color: 'red' }}>{errors.username}</p>
-        )}
+        <form className="auth-form" onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="username">Username</label>
+            <input
+              id="username"
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            {errors.username && (
+              <p className="field-error">{errors.username}</p>
+            )}
+          </div>
 
-        <br />
+          <div className="form-group">
+            <label htmlFor="email">Email</label>
+            <input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            {errors.email && <p className="field-error">{errors.email}</p>}
+          </div>
 
-        <label htmlFor="email">Email</label>
-        <br />
-        <input
-          id="email"
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        {errors.email && (
-          <p style={{ color: 'red' }}>{errors.email}</p>
-        )}
+          <div className="form-group">
+            <label htmlFor="password">Password</label>
+            <input
+              id="password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            {errors.password && (
+              <p className="field-error">{errors.password}</p>
+            )}
+          </div>
 
-        <br />
+          {serverError && <p className="server-error">{serverError}</p>}
 
-        <label htmlFor="password">Password</label>
-        <br />
-        <input
-          id="password"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        {errors.password && (
-          <p style={{ color: 'red' }}>{errors.password}</p>
-        )}
+          <button className="auth-button" type="submit" disabled={!canSubmit}>
+            {loading ? 'Creating account...' : 'Register'}
+          </button>
 
-        <br />
-        <br />
-
-        {serverError && (
-          <p style={{ color: 'red' }}>{serverError}</p>
-        )}
-
-        <button type="submit" disabled={!canSubmit}>
-          {loading ? 'Creating account...' : 'Register'}
-        </button>
-
-        <p>
-          Already have an account?{' '}
-          <Link to="/login">Login</Link>
-        </p>
-      </form>
+          <p className="auth-footer">
+            Already have an account? <Link to="/login">Login</Link>
+          </p>
+        </form>
+      </div>
     </div>
   );
 }

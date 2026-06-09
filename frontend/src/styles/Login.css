@@ -1,0 +1,128 @@
+/* Auth pages (Login / Register) */
+/* Theme: Emerald Green | Fonts: Dancing Script (brand) · Rubik (body) */
+
+.auth-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 8vh 20px 20px;
+  background: url('/travel-bg.png') center top / cover no-repeat;
+}
+
+.auth-card {
+  width: 100%;
+  max-width: 380px;
+  background: #fffdf9;
+  padding: 32px 28px;
+  border-radius: 16px;
+  box-shadow: 0 12px 32px rgba(6, 95, 70, 0.3);
+}
+
+.auth-title {
+  margin: 0 0 8px;
+  font-family: 'Dancing Script', cursive;
+  font-size: 2.6rem;
+  font-weight: 700;
+  -webkit-text-stroke: 0.7px #065f46;
+  color: #065f46;
+  text-align: center;
+}
+
+.auth-subtitle {
+  margin: 0 0 24px;
+  font-family: 'Rubik', sans-serif;
+  font-size: 1rem;
+  color: #022c22;
+  text-align: center;
+}
+
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #022c22;
+}
+
+.form-group input {
+  padding: 10px 12px;
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-family: 'Rubik', sans-serif;
+  font-size: 0.95rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: #065f46;
+  box-shadow: 0 0 0 3px rgba(6, 95, 70, 0.22);
+}
+
+.field-error {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #dc2626;
+}
+
+.server-error {
+  margin: 0;
+  padding: 10px 12px;
+  font-size: 0.85rem;
+  color: #b91c1c;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.auth-button {
+  padding: 11px;
+  border: none;
+  border-radius: 8px;
+  background: #059669;
+  color: #fff;
+  font-family: 'Rubik', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.auth-button:hover:not(:disabled) {
+  background: #065f46;
+}
+
+.auth-button:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+}
+
+.auth-footer {
+  margin: 4px 0 0;
+  font-size: 0.85rem;
+  color: #022c22;
+  text-align: center;
+}
+
+.auth-footer a {
+  color: #065f46;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-footer a:hover {
+  text-decoration: underline;
+}

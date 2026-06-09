@@ -1,4 +1,3 @@
-import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 
 function Navbar() {
@@ -14,32 +13,27 @@ function Navbar() {
   }
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: "10px 20px",
-        borderBottom: "1px solid #ddd",
-      }}
-    >
-      {/* LEFT - Tabs */}
-      <div style={{ display: "flex", gap: "15px" }}>
-        <Link to="/">Home</Link>
-        <Link to="/wishlist">Wishlist</Link>
-        <Link to="/visited">Visited</Link>
+    <nav className="navbar">
+      {/* LEFT - brand + tabs */}
+      <div className="navbar-left">
+        <Link to="/" className="navbar-brand">
+          WanderList 🌍
+        </Link>
+        <div className="navbar-links">
+          <Link to="/">Home</Link>
+          <Link to="/wishlist">Wishlist</Link>
+          <Link to="/visited">Visited</Link>
+        </div>
       </div>
 
-      {/* CENTER - Welcome */}
-      <div>
-        <strong>Welcome {user?.username || "Guest"}</strong>
+      {/* RIGHT - welcome + logout */}
+      <div className="navbar-right">
+        <span className="navbar-user">Welcome {user?.username || "Guest"}</span>
+        <button className="navbar-logout" onClick={handleLogout}>
+          Logout
+        </button>
       </div>
-
-      {/* RIGHT - Logout */}
-      <button onClick={handleLogout}>
-        Logout
-      </button>
-    </div>
+    </nav>
   );
 }
 

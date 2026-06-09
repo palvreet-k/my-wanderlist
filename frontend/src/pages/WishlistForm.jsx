@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 
 const BEST_TIME_OPTIONS = ["Jan – Mar", "Apr – Jun", "Jul – Sep", "Oct – Dec"];
@@ -9,7 +9,7 @@ function WishlistForm() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const existing = location.state; // edit mode data (from Wishlist page)
+  const existing = location.state; // data for update(from Wishlist page)
 
   const [form, setForm] = useState({
     bestTime: existing?.bestTime || "",
@@ -66,57 +66,56 @@ function WishlistForm() {
   }
 
   return (
-    <div style={{ padding: "20px", maxWidth: "500px" }}>
-      <h2>{existing ? "✏️ Update Wishlist" : "⭐ Add to Wishlist"}</h2>
-      <h3>🌍 {existing?.country || name}</h3>
+    <div className="app-page is-centered">
+      <h1 className="page-title">
+        {existing ? "✏️ Update Wishlist" : "⭐ Add to Wishlist"}
+      </h1>
 
-      <form onSubmit={handleSubmit}>
-        <label>Best time to visit</label>
-        <br />
-        <select name="bestTime" value={form.bestTime} onChange={handleChange}>
-          <option value="">Select best time</option>
-          {BEST_TIME_OPTIONS.map((opt) => (
-            <option key={opt} value={opt}>
-              {opt}
-            </option>
-          ))}
-        </select>
+      <div className="card">
+        <h3 className="form-country">🌍 {existing?.country || name}</h3>
 
-        <br />
-        <br />
+        <form className="app-form" onSubmit={handleSubmit}>
+          <div>
+            <label>Best time to visit</label>
+            <select name="bestTime" value={form.bestTime} onChange={handleChange}>
+              <option value="">Select best time</option>
+              {BEST_TIME_OPTIONS.map((opt) => (
+                <option key={opt} value={opt}>
+                  {opt}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        <label>Budget (USD)</label>
-        <br />
-        <select name="budget" value={form.budget} onChange={handleChange}>
-          <option value="">Select budget</option>
-          {BUDGET_OPTIONS.map((opt) => (
-            <option key={opt} value={opt}>
-              {opt}
-            </option>
-          ))}
-        </select>
+          <div>
+            <label>Budget (USD)</label>
+            <select name="budget" value={form.budget} onChange={handleChange}>
+              <option value="">Select budget</option>
+              {BUDGET_OPTIONS.map((opt) => (
+                <option key={opt} value={opt}>
+                  {opt}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        <br />
-        <br />
+          <div>
+            <label>Notes</label>
+            <textarea
+              name="notes"
+              placeholder="Notes"
+              value={form.notes}
+              onChange={handleChange}
+            />
+          </div>
 
-        <label>Notes</label>
-        <br />
-        <textarea
-          name="notes"
-          placeholder="Notes"
-          value={form.notes}
-          onChange={handleChange}
-        />
+          {error && <p className="error-text">{error}</p>}
 
-        <br />
-        <br />
-
-        {error && <p style={{ color: "red" }}>{error}</p>}
-
-        <button type="submit" disabled={loading}>
-          {loading ? "Saving..." : existing ? "Update Wishlist" : "Add Wishlist"}
-        </button>
-      </form>
+          <button className="btn btn-primary" type="submit" disabled={loading}>
+            {loading ? "Saving..." : existing ? "Update Wishlist" : "Add Wishlist"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 }
