@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { API_BASE } from "../config";
 
 function Visited() {
   const [visited, setVisited] = useState([]);
@@ -12,7 +13,7 @@ function Visited() {
       try {
         const token = localStorage.getItem("token");
 
-        const res = await fetch("http://localhost:3000/api/visited", {
+        const res = await fetch(`${API_BASE}/api/visited`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -30,7 +31,7 @@ function Visited() {
     try {
       const token = localStorage.getItem("token");
 
-      await fetch(`http://localhost:3000/api/visited/${id}`, {
+      await fetch(`${API_BASE}/api/visited/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });

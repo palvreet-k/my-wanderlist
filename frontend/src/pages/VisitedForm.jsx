@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { API_BASE } from "../config";
 
 function VisitedForm() {
   const location = useLocation();
@@ -35,8 +36,8 @@ function VisitedForm() {
       // Existing record (with an _id) is an update
       // A new record (without an _id) is a create
       const url = existing?._id
-        ? `http://localhost:3000/api/visited/${existing._id}`
-        : "http://localhost:3000/api/visited";
+        ? `${API_BASE}/api/visited/${existing._id}`
+        : `${API_BASE}/api/visited`;
 
       const method = existing?._id ? "PUT" : "POST";
 
@@ -61,7 +62,7 @@ function VisitedForm() {
       // Mark as Visited(in Wishlist) removes entry from wishlist
       if (!existing?._id && existing?.fromWishlistId) {
         await fetch(
-          `http://localhost:3000/api/wishlist/${existing.fromWishlistId}`,
+          `${API_BASE}/api/wishlist/${existing.fromWishlistId}`,
           {
             method: "DELETE",
             headers: { Authorization: `Bearer ${token}` },

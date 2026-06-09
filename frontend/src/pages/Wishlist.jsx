@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { API_BASE } from "../config";
 
 function Wishlist() {
   const [wishlist, setWishlist] = useState([]);
@@ -10,7 +11,7 @@ function Wishlist() {
     async function fetchWishlist() {
       const token = localStorage.getItem("token");
 
-      const res = await fetch("http://localhost:3000/api/wishlist", {
+      const res = await fetch(`${API_BASE}/api/wishlist`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -24,7 +25,7 @@ function Wishlist() {
   async function removeItem(id) {
     const token = localStorage.getItem("token");
 
-    await fetch(`http://localhost:3000/api/wishlist/${id}`, {
+    await fetch(`${API_BASE}/api/wishlist/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { API_BASE } from '../config';
 import '../styles/Login.css';
 
 function LoginForm() {
@@ -41,7 +42,7 @@ function LoginForm() {
 
     setLoading(true);
     try {
-      const res = await fetch('http://localhost:3000/api/auth/login', {
+      const res = await fetch(`${API_BASE}/api/auth/login`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: name, password }),

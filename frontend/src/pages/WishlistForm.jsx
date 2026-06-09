@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { API_BASE } from "../config";
 
 const BEST_TIME_OPTIONS = ["Jan – Mar", "Apr – Jun", "Jul – Sep", "Oct – Dec"];
 const BUDGET_OPTIONS = ["<500", "1000", "1500", "2000", "3000", "5000+"];
@@ -37,8 +38,8 @@ function WishlistForm() {
 
       // An existing record (with an _id) is an update; otherwise it's a new add
       const url = existing?._id
-        ? `http://localhost:3000/api/wishlist/${existing._id}`
-        : "http://localhost:3000/api/wishlist";
+        ? `${API_BASE}/api/wishlist/${existing._id}`
+        : `${API_BASE}/api/wishlist`;
 
       const method = existing?._id ? "PUT" : "POST";
 
