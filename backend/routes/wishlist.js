@@ -18,6 +18,14 @@ router.get('/', protect, async (req, res) => {
 // POST /api/wishlist - add a country to the user's wishlist
 router.post('/', protect, async (req, res) => {
   try {
+    const exists = await Wishlist.findOne({
+      userId: req.user._id,
+      country: req.body.country
+    });
+    if (exists) {
+      return res.status(409).json({ message: 'This country is already in your wishlist' });
+    }
+
     const item = await Wishlist.create({
       userId:   req.user._id,
       country:  req.body.country,

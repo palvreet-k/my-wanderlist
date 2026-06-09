@@ -56,7 +56,8 @@ function WishlistForm() {
       });
 
       if (!res.ok) {
-        throw new Error("Something went wrong");
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.message || "Something went wrong");
       }
 
       navigate("/wishlist");

@@ -18,6 +18,14 @@ router.get('/', protect, async (req, res) => {
 // POST /api/visited - add a visited country
 router.post('/', protect, async (req, res) => {
   try {
+    const exists = await Visited.findOne({
+      userId: req.user._id,
+      country: req.body.country
+    });
+    if (exists) {
+      return res.status(409).json({ message: "You've already marked this country as visited" });
+    }
+
     const newVisited = await Visited.create({
       userId:    req.user._id,
       country:   req.body.country,

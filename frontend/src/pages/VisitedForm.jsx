@@ -54,7 +54,8 @@ function VisitedForm() {
       });
 
       if (!res.ok) {
-        throw new Error("Failed to save visited");
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.message || "Failed to save visited");
       }
 
       // Mark as Visited(in Wishlist) removes entry from wishlist
