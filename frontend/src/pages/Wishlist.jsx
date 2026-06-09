@@ -36,6 +36,8 @@ function Wishlist() {
     navigate("/visited-form", {
       state: {
         country: item.country,
+        flag: item.flag,
+        fromWishlistId: item._id,
       },
     });
   }
@@ -61,7 +63,16 @@ function Wishlist() {
             }
           >
             {/* Header */}
-            <h2>{item.country}</h2>
+            <div className="list-head">
+              {item.flag && (
+                <img
+                  className="list-flag"
+                  src={item.flag}
+                  alt={item.country}
+                />
+              )}
+              <h2>{item.country}</h2>
+            </div>
 
             {/* Expanded */}
             {expandedId === item._id && (
@@ -92,7 +103,7 @@ function Wishlist() {
                       moveToVisited(item);
                     }}
                   >
-                    ✅ Move to Visited
+                    ✅ Mark as Visited
                   </button>
 
                   <button
@@ -102,7 +113,7 @@ function Wishlist() {
                       removeItem(item._id);
                     }}
                   >
-                    ❌ Remove
+                    ❌ Delete
                   </button>
                 </div>
               </>

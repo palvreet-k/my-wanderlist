@@ -82,7 +82,11 @@ function CountryDetail() {
         <div className="list-actions">
           <button
             className="btn btn-primary"
-            onClick={() => navigate(`/wishlist-form/${country.name.common}`)}
+            onClick={() =>
+              navigate(`/wishlist-form/${country.name.common}`, {
+                state: { flag: country.flags?.png },
+              })
+            }
           >
             ⭐ Add to Wishlist
           </button>
@@ -91,7 +95,10 @@ function CountryDetail() {
             className="btn btn-secondary"
             onClick={() =>
               navigate("/visited-form", {
-                state: { country: country.name.common },
+                state: {
+                  country: country.name.common,
+                  flag: country.flags?.png,
+                },
               })
             }
           >

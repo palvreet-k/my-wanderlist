@@ -21,6 +21,7 @@ router.post('/', protect, async (req, res) => {
     const item = await Wishlist.create({
       userId:   req.user._id,
       country:  req.body.country,
+      flag:     req.body.flag,
       bestTime: req.body.bestTime,
       budget:   req.body.budget,
       notes:    req.body.notes

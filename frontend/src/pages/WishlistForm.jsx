@@ -35,11 +35,12 @@ function WishlistForm() {
     try {
       const token = localStorage.getItem("token");
 
-      const url = existing
+      // An existing record (with an _id) is an update; otherwise it's a new add
+      const url = existing?._id
         ? `http://localhost:3000/api/wishlist/${existing._id}`
         : "http://localhost:3000/api/wishlist";
 
-      const method = existing ? "PUT" : "POST";
+      const method = existing?._id ? "PUT" : "POST";
 
       const res = await fetch(url, {
         method,
@@ -49,6 +50,7 @@ function WishlistForm() {
         },
         body: JSON.stringify({
           country: existing?.country || name,
+          flag: existing?.flag || "",
           ...form,
         }),
       });
@@ -68,7 +70,7 @@ function WishlistForm() {
   return (
     <div className="app-page is-centered">
       <h1 className="page-title">
-        {existing ? "✏️ Update Wishlist" : "⭐ Add to Wishlist"}
+        {existing?._id ? "✏️ Update Wishlist" : "⭐ Add to Wishlist"}
       </h1>
 
       <div className="card">
@@ -112,7 +114,7 @@ function WishlistForm() {
           {error && <p className="error-text">{error}</p>}
 
           <button className="btn btn-primary" type="submit" disabled={loading}>
-            {loading ? "Saving..." : existing ? "Update Wishlist" : "Add Wishlist"}
+            {loading ? "Saving..." : existing?._id ? "Update Wishlist" : "Add Wishlist"}
           </button>
         </form>
       </div>

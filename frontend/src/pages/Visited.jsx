@@ -68,7 +68,16 @@ function Visited() {
             }
           >
             {/* Header */}
-            <h2>{item.country}</h2>
+            <div className="list-head">
+              {item.flag && (
+                <img
+                  className="list-flag"
+                  src={item.flag}
+                  alt={item.country}
+                />
+              )}
+              <h2>{item.country}</h2>
+            </div>
             <p className="list-meta">
               ⭐ Rating: {item.rating ? `${item.rating}/5` : "Not rated"}
             </p>
@@ -100,7 +109,7 @@ function Visited() {
                       deleteItem(item._id);
                     }}
                   >
-                    ❌ Remove
+                    ❌ Delete
                   </button>
                 </div>
               </>

@@ -21,6 +21,7 @@ router.post('/', protect, async (req, res) => {
     const newVisited = await Visited.create({
       userId:    req.user._id,
       country:   req.body.country,
+      flag:      req.body.flag,
       visitDate: req.body.visitDate || null,
       rating:    req.body.rating || null,
       notes:     req.body.notes

@@ -48,12 +48,24 @@ function VisitedForm() {
         },
         body: JSON.stringify({
           country: existing?.country,
+          flag: existing?.flag || "",
           ...form,
         }),
       });
 
       if (!res.ok) {
         throw new Error("Failed to save visited");
+      }
+
+      // Mark as Visited(in Wishlist) removes entry from wishlist
+      if (!existing?._id && existing?.fromWishlistId) {
+        await fetch(
+          `http://localhost:3000/api/wishlist/${existing.fromWishlistId}`,
+          {
+            method: "DELETE",
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
       }
 
       navigate("/visited");
