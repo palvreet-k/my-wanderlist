@@ -396,3 +396,41 @@ body {
   min-height: 90px;
   resize: vertical;
 }
+
+/* ---------- Mobile (≤600px) ---------- */
+@media (max-width: 600px) {
+  .app-page {
+    padding: 20px 14px 40px;
+  }
+
+  .page-title {
+    font-size: 1.4rem;
+  }
+
+  /* navbar wraps instead of overflowing */
+  .navbar {
+    flex-wrap: wrap;
+    gap: 10px 14px;
+    padding: 12px 16px;
+  }
+
+  .navbar-left {
+    gap: 16px;
+  }
+
+  .navbar-user {
+    display: none; /* hide "Welcome <name>" to save room */
+  }
+
+  /* keep capital/region left-aligned when space is tight */
+  .result-meta {
+    text-align: left;
+  }
+
+  /* let centered cards + search use the full width on phones */
+  .app-page.is-centered .card,
+  .app-page.is-centered .result-card,
+  .search-input {
+    max-width: 100%;
+  }
+}
