@@ -1,5 +1,5 @@
 // routes/auth.js
-// POST /api/auth/register - hash password, create user, return a JWT
+// POST /api/auth/register - hash password, create user
 // POST /api/auth/login    - verify password with bcrypt, return a JWT
 // GET  /api/auth/logout   - client drops the token (no server session)
 // GET  /api/auth/me       - return the authenticated user
@@ -25,10 +25,9 @@ router.post('/auth/register', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await User.create({ username, email, password: hashedPassword });
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '7d' });
     res.status(201).json({
-      token,
-      user: { id: user._id, username: user.username, email: user.email }
+      message: 'Registration successful',
+      user: { id: user._id, username: user.username, email: user.email } //added for Postman testing
     });
   } catch (err) {
     console.error(err);
