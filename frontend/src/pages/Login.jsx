@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { API_BASE } from '../config';
+import AuthWelcome from '../components/AuthWelcome.jsx';
 import '../styles/Login.css';
 
 function LoginForm() {
@@ -70,6 +71,7 @@ function LoginForm() {
 
   return (
     <div className="auth-page">
+      <AuthWelcome />
       <div className="auth-card">
         <h2 className="auth-title">WanderList 🌍</h2>
         <p className="auth-subtitle">Welcome back, traveler!</p>

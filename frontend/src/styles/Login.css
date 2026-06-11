@@ -4,10 +4,48 @@
 .auth-page {
   min-height: 100vh;
   display: flex;
-  align-items: flex-start;
+  flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
-  padding: 8vh 20px 20px;
+  gap: 24px;
+  padding: 40px 20px;
   background: url('/travel-bg.png') center top / cover no-repeat;
+}
+
+/* Welcome panel beside the form */
+.auth-welcome {
+  width: 100%;
+  max-width: 320px;
+  background: linear-gradient(160deg, #065f46, #0f766e);
+  color: #fff;
+  border-radius: 16px;
+  padding: 32px 28px;
+  box-shadow: 0 12px 32px rgba(6, 95, 70, 0.3);
+}
+
+.auth-welcome-title {
+  margin: 0 0 12px;
+  font-family: 'Rubik', sans-serif;
+  font-size: 1.5rem;
+  color: #fff;
+}
+
+.auth-welcome-desc {
+  margin: 0 0 20px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  color: #ecfdf5;
+}
+
+.auth-welcome-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 0.9rem;
+  color: #d1fae5;
 }
 
 .auth-card {

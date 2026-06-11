@@ -53,6 +53,17 @@ function Home() {
     <div className="app-page is-centered">
       <h1 className="page-title">🌍 Where to next?</h1>
 
+      <p className="home-intro">
+        Search any country, then save it to your <strong>Wishlist</strong> or mark
+        it as <strong>Visited</strong> — your own travel bucket list, all in one place.
+      </p>
+
+      <div className="home-steps">
+        <span><strong>1</strong> Search a country</span>
+        <span><strong>2</strong> Save to Wishlist or Visited</span>
+        <span><strong>3</strong> Track your travels</span>
+      </div>
+
       <input
         className="search-input"
         type="text"

@@ -65,6 +65,36 @@ body {
   font-size: 0.9rem;
 }
 
+.home-intro {
+  max-width: 600px;
+  margin: 0 auto 16px;
+  color: #374151;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.home-steps {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 0 auto 24px;
+}
+
+.home-steps span {
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  color: #065f46;
+  border-radius: 999px;
+  padding: 6px 14px;
+  font-size: 0.85rem;
+}
+
+.home-steps strong {
+  color: #059669;
+  margin-right: 6px;
+}
+
 /* Empty-state (Wishlist / Visited with no items) */
 .empty-state {
   display: flex;
