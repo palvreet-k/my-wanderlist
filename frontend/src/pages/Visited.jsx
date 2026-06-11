@@ -28,6 +28,8 @@ function Visited() {
   }, []);
 
   async function deleteItem(id) {
+    if (!window.confirm("Delete this country from your visited list?")) return;
+
     try {
       const token = localStorage.getItem("token");
 

@@ -23,6 +23,8 @@ function Wishlist() {
   }, []);
 
   async function removeItem(id) {
+    if (!window.confirm("Remove this country from your wishlist?")) return;
+
     const token = localStorage.getItem("token");
 
     await fetch(`${API_BASE}/api/wishlist/${id}`, {

@@ -17,7 +17,7 @@ router.post('/auth/register', async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
-    // Validate input (frontend also checks, but guard the API directly too)
+    // Validate input on server side
     if (!username || !email || !password) {
       return res.status(400).json({ message: 'Username, email and password are required' });
     }
@@ -72,7 +72,7 @@ router.post('/auth/login', async (req, res) => {
   }
 });
 
-// GET /api/auth/logout 
+// GET /api/auth/logout : Logout handled by client, this endpoint could be use for future
 router.get('/auth/logout', (req, res) => {
   res.json({ message: 'Logged out successfully' });
 });
