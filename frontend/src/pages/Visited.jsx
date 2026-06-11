@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { API_BASE } from "../config";
+import ConfirmDialog from "../components/ConfirmDialog.jsx";
 
 function Visited() {
   const [visited, setVisited] = useState([]);
   const [expandedId, setExpandedId] = useState(null);
+  const [confirmItem, setConfirmItem] = useState(null); // item pending delete
 
   const navigate = useNavigate();
 
@@ -28,8 +30,6 @@ function Visited() {
   }, []);
 
   async function deleteItem(id) {
-    if (!window.confirm("Delete this country from your visited list?")) return;
-
     try {
       const token = localStorage.getItem("token");
 
@@ -41,6 +41,8 @@ function Visited() {
       setVisited((prev) => prev.filter((item) => item._id !== id));
     } catch (err) {
       console.error("Delete failed:", err);
+    } finally {
+      setConfirmItem(null);
     }
   }
 
@@ -109,7 +111,7 @@ function Visited() {
                     className="btn btn-danger"
                     onClick={(e) => {
                       e.stopPropagation();
-                      deleteItem(item._id);
+                      setConfirmItem(item);
                     }}
                   >
                     ❌ Delete
@@ -120,6 +122,15 @@ function Visited() {
           </div>
         ))
       )}
+
+      <ConfirmDialog
+        open={!!confirmItem}
+        title="Remove from Visited?"
+        message={`"${confirmItem?.country}" will be removed from your visited list.`}
+        confirmText="Delete"
+        onConfirm={() => deleteItem(confirmItem._id)}
+        onCancel={() => setConfirmItem(null)}
+      />
     </div>
   );
 }

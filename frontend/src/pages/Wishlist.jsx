@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { API_BASE } from "../config";
+import ConfirmDialog from "../components/ConfirmDialog.jsx";
 
 function Wishlist() {
   const [wishlist, setWishlist] = useState([]);
   const [expandedId, setExpandedId] = useState(null);
+  const [confirmItem, setConfirmItem] = useState(null); // item pending delete
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,8 +25,6 @@ function Wishlist() {
   }, []);
 
   async function removeItem(id) {
-    if (!window.confirm("Remove this country from your wishlist?")) return;
-
     const token = localStorage.getItem("token");
 
     await fetch(`${API_BASE}/api/wishlist/${id}`, {
@@ -33,6 +33,7 @@ function Wishlist() {
     });
 
     setWishlist((prev) => prev.filter((i) => i._id !== id));
+    setConfirmItem(null);
   }
 
   function moveToVisited(item) {
@@ -113,7 +114,7 @@ function Wishlist() {
                     className="btn btn-danger"
                     onClick={(e) => {
                       e.stopPropagation();
-                      removeItem(item._id);
+                      setConfirmItem(item);
                     }}
                   >
                     ❌ Delete
@@ -124,6 +125,15 @@ function Wishlist() {
           </div>
         ))
       )}
+
+      <ConfirmDialog
+        open={!!confirmItem}
+        title="Remove from Wishlist?"
+        message={`"${confirmItem?.country}" will be removed from your wishlist.`}
+        confirmText="Delete"
+        onConfirm={() => removeItem(confirmItem._id)}
+        onCancel={() => setConfirmItem(null)}
+      />
     </div>
   );
 }

@@ -397,6 +397,47 @@ body {
   resize: vertical;
 }
 
+/* ---------- Confirm modal ---------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(2, 44, 34, 0.45);
+}
+
+.modal-card {
+  width: 100%;
+  max-width: 360px;
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+}
+
+.modal-title {
+  margin: 0 0 8px;
+  font-family: 'Rubik', sans-serif;
+  font-size: 1.2rem;
+  color: #064e3b;
+}
+
+.modal-message {
+  margin: 0 0 20px;
+  font-size: 0.95rem;
+  color: #374151;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+}
+
 /* ---------- Mobile (≤600px) ---------- */
 @media (max-width: 600px) {
   .app-page {
