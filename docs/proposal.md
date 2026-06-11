@@ -12,7 +12,7 @@ WanderList is a full-stack web application that helps travelers organize their b
 - **Mark as visited** — move a country from "Want to Visit" to "Visited" with travel date and personal notes
 - **Edit travel notes** — update notes and visit date for any visited country
 - **Remove destinations** — delete countries from either list
-- **User authentication** — sign in with Google so each user sees only their own lists
+- **User authentication** — sign up / log in with a username and password (JWT) so each user sees only their own lists
 - **Persistent storage** — all destinations and notes are saved to a MongoDB database
 
 **Stretch goals** (will attempt if core features finish ahead of schedule):
@@ -32,7 +32,7 @@ Casual travelers and travel enthusiasts who want a simple, personal way to track
 | Backend | Node.js, Express |
 | Database | MongoDB Atlas |
 | External API | REST Countries v3.1 |
-| Authentication | Google OAuth 2.0 via Passport.js + express-session + connect-mongo |
+| Authentication | Username/password with JWT (Passport-JWT + bcrypt) |
 | Deployment | Render (frontend static site + backend web service) |
 
 **Scope:** this project will not include social features (sharing, comments, following), photo uploads, an interactive map view, or a mobile app. The app will be responsive and work on both desktop and mobile browsers.
@@ -47,7 +47,7 @@ Casual travelers and travel enthusiasts who want a simple, personal way to track
 | Render (backend web service) | Free | $0 |
 | MongoDB Atlas | M0 Free | $0 |
 | REST Countries API | Free | $0 |
-| Google OAuth | Free | $0 |
+| Passport + JWT | Free | $0 |
 | Domain name | None | $0 |
 | **Total** | | **$0/month** |
 
@@ -59,7 +59,7 @@ Casual travelers and travel enthusiasts who want a simple, personal way to track
 | Render (backend web service) | Starter | $7 |
 | MongoDB Atlas | Flex | $8–$30 |
 | REST Countries API | Free | $0 |
-| Google OAuth | Free | $0 |
+| JWT auth (jsonwebtoken) | Free | $0 |
 | Domain name | `.com` via Namecheap | ~$1 |
 | **Total** | | **~$16–$38/month** |
 
