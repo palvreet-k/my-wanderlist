@@ -17,6 +17,17 @@ router.post('/auth/register', async (req, res) => {
   try {
     const { username, email, password } = req.body;
 
+    // Validate input (frontend also checks, but guard the API directly too)
+    if (!username || !email || !password) {
+      return res.status(400).json({ message: 'Username, email and password are required' });
+    }
+    if (!/^\S+@\S+\.\S+$/.test(email)) {
+      return res.status(400).json({ message: 'Please provide a valid email address' });
+    }
+    if (password.length < 6) {
+      return res.status(400).json({ message: 'Password must be at least 6 characters' });
+    }
+
     const existing = await User.findOne({ $or: [{ email }, { username }] });
     if (existing) {
       return res.status(400).json({ message: 'Username or email already in use' });
@@ -39,6 +50,10 @@ router.post('/auth/register', async (req, res) => {
 router.post('/auth/login', async (req, res) => {
   try {
     const { username, password } = req.body;
+
+    if (!username || !password) {
+      return res.status(400).json({ message: 'Username and password are required' });
+    }
 
     const user = await User.findOne({ username });
     if (!user) return res.status(401).json({ message: 'Invalid username or password' });
