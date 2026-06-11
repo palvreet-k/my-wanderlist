@@ -7,6 +7,7 @@ import passport from './middleware/passport.js';
 import authRoutes from './routes/auth.js';
 import wishlistRoutes from './routes/wishlist.js';
 import visitedRoutes from './routes/visited.js';
+import countriesRoutes from './routes/countries.js';
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.use(passport.initialize());
 app.use('/api', authRoutes);
 app.use('/api/wishlist', wishlistRoutes);
 app.use('/api/visited', visitedRoutes)
+app.use('/api/countries', countriesRoutes);
 
 // Route not found middleware function
 

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { API_BASE } from "../config";
 
 function Home() {
   const [search, setSearch] = useState("");
@@ -22,7 +23,7 @@ function Home() {
 
       try {
         const res = await fetch(
-          `https://restcountries.com/v3.1/name/${search}?fields=name,capital,currencies,flags,region`
+          `${API_BASE}/api/countries/search/${encodeURIComponent(search)}`
         );
 
         if (!res.ok) {

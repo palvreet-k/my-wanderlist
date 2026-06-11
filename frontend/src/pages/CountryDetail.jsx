@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
+import { API_BASE } from "../config";
 
 function CountryDetail() {
   const { name } = useParams();
@@ -14,7 +15,7 @@ function CountryDetail() {
         setError("");
 
         const res = await fetch(
-          `https://restcountries.com/v3.1/name/${name}?fullText=true`
+          `${API_BASE}/api/countries/detail/${encodeURIComponent(name)}`
         );
 
         if (!res.ok) {
@@ -23,11 +24,11 @@ function CountryDetail() {
 
         const data = await res.json();
 
-        if (!data || data.length === 0) {
+        if (!data || !data.name) {
           throw new Error("No country data");
         }
 
-        setCountry(data[0]);
+        setCountry(data);
       } catch (err) {
         setError(err.message);
         setCountry(null);
@@ -72,8 +73,8 @@ function CountryDetail() {
           </p>
           <p>
             <b>Currency:</b>{" "}
-            {country.currencies
-              ? Object.keys(country.currencies).join(", ")
+            {country.currencies?.length
+              ? country.currencies.join(", ")
               : "N/A"}
           </p>
         </div>
