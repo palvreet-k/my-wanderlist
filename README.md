@@ -8,7 +8,7 @@ A full-stack travel bucket-list app. Search countries (REST Countries API), save
 - **Frontend:** React + Vite, React Router, plain CSS
 - **Backend:** Node.js + Express, Passport-JWT, bcrypt
 - **Database:** MongoDB Atlas (Mongoose)
-- **External API:** REST Countries v3.1 (search, flags, details)
+- **External API:** REST Countries v5 (search, flags, details) — proxied through the backend (API key stays server-side)
 
 ---
 
@@ -47,6 +47,7 @@ Create a `.env` file in `backend/`:
 PORT=3000
 MONGO_URI=your_mongodb_atlas_connection_string
 JWT_SECRET=any_long_random_string
+RESTCOUNTRIES_KEY=your_rest_countries_v5_api_key
 ```
 
 > **MongoDB Atlas:** add your IP under **Network Access** (use `0.0.0.0/0` for dev).
@@ -69,6 +70,8 @@ Backend runs on **http://localhost:3000**.
 | GET | `/api/auth/me` | JWT | Return the current user |
 | GET/POST/PUT/DELETE | `/api/wishlist` | JWT | Wishlist CRUD |
 | GET/POST/PUT/DELETE | `/api/visited` | JWT | Visited CRUD |
+| GET | `/api/countries/search/:q` | – | Country search (proxies REST Countries v5) |
+| GET | `/api/countries/detail/:name` | – | Single country detail |
 
 Protected routes require an `Authorization: Bearer <token>` header.
 
@@ -104,4 +107,4 @@ Both services run on Render:
 - **Frontend** (Static Site) — https://my-wanderlist-1.onrender.com
   Root `frontend`, build `npm install && npm run build`, publish `dist`. Env: `VITE_API_URL=https://my-wanderlist.onrender.com`. Add a **Rewrite** rule `/* → /index.html` so client-side routes work on refresh.
 - **Backend** (Web Service) — https://my-wanderlist.onrender.com
-  Root `backend`, start `npm start`. Env: `MONGO_URI`, `JWT_SECRET`.
+  Root `backend`, start `npm start`. Env: `MONGO_URI`, `JWT_SECRET`, `RESTCOUNTRIES_KEY`.

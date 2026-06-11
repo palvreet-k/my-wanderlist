@@ -1,6 +1,6 @@
 // routes/countries.js
-// Proxies REST Countries v5 (key kept server-side) and maps the response to the
-// shape the frontend already expects.
+// Server-side proxy for the REST Countries v5 API — keeps the API key private
+// and reshape v5's nested response into the simple format the frontend expects.
 
 import express from 'express';
 
@@ -26,15 +26,15 @@ async function searchV5(query) {
 function shape(o) {
   return {
     name: { common: o.names?.common || '' },
-    capital: o.capitals || [],
+    capital: (o.capitals || []).map((c) => c.name), // Extract name only from object
     region: o.region || '',
     population: o.population || 0,
-    currencies: (o.currencies || []).map((c) => c.code), // e.g. ["CAD", "USD"]
+    currencies: (o.currencies || []).map((c) => c.code), 
     flags: { png: o.flag?.url_png || '' }
   };
 }
 
-// GET /api/countries/search/:q  -> array of matches
+// GET /api/countries/search/:q  -> array of matches (for Home page search)
 router.get('/search/:q', async (req, res) => {
   try {
     const objects = await searchV5(req.params.q);
@@ -45,7 +45,7 @@ router.get('/search/:q', async (req, res) => {
   }
 });
 
-// GET /api/countries/detail/:name  -> single country (exact match, else first result)
+// GET /api/countries/detail/:name  -> single country (for CountryDetail page)
 router.get('/detail/:name', async (req, res) => {
   try {
     const objects = await searchV5(req.params.name);

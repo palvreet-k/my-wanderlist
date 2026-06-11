@@ -31,7 +31,7 @@ Casual travelers and travel enthusiasts who want a simple, personal way to track
 | Frontend | React (Vite), React Router, plain CSS |
 | Backend | Node.js, Express |
 | Database | MongoDB Atlas |
-| External API | REST Countries v3.1 |
+| External API | REST Countries v5 (proxied via backend, API-key secured) |
 | Authentication | Username/password with JWT (Passport-JWT + bcrypt) |
 | Deployment | Render (frontend static site + backend web service) |
 
