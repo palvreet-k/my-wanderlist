@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { API_BASE } from "../config";
 
 function Home() {
@@ -8,7 +8,26 @@ function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  const [wishlist, setWishlist] = useState([]);
+  const [visited, setVisited] = useState([]);
+
   const navigate = useNavigate();
+
+  // Load a glimpse of the user's lists
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const opts = { headers: { Authorization: `Bearer ${token}` } };
+
+    fetch(`${API_BASE}/api/wishlist`, opts)
+      .then((r) => (r.ok ? r.json() : []))
+      .then(setWishlist)
+      .catch(() => {});
+
+    fetch(`${API_BASE}/api/visited`, opts)
+      .then((r) => (r.ok ? r.json() : []))
+      .then(setVisited)
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     const fetchCountries = async () => {
@@ -119,6 +138,45 @@ function Home() {
           </div>
         </div>
       ))}
+
+      {/* lists not shown when search is active*/}
+      {search.length <= 2 && (wishlist.length > 0 || visited.length > 0) && (
+        <div className="home-lists">
+          {wishlist.length > 0 && (
+            <section className="glimpse-card">
+              <div className="glimpse-head">
+                <h3>⭐ Wishlist</h3>
+                <Link to="/wishlist">View all →</Link>
+              </div>
+              <div className="glimpse-list">
+                {wishlist.slice(0, 5).map((item) => (
+                  <div className="glimpse-item" key={item._id}>
+                    {item.flag && <img src={item.flag} alt="" />}
+                    <span>{item.country}</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+
+          {visited.length > 0 && (
+            <section className="glimpse-card">
+              <div className="glimpse-head">
+                <h3>✅ Visited</h3>
+                <Link to="/visited">View all →</Link>
+              </div>
+              <div className="glimpse-list">
+                {visited.slice(0, 5).map((item) => (
+                  <div className="glimpse-item" key={item._id}>
+                    {item.flag && <img src={item.flag} alt="" />}
+                    <span>{item.country}</span>
+                  </div>
+                ))}
+              </div>
+            </section>
+          )}
+        </div>
+      )}
     </div>
   );
 }
