@@ -3,10 +3,18 @@ import { useNavigate, Link } from "react-router-dom";
 import { API_BASE } from "../config";
 import ConfirmDialog from "../components/ConfirmDialog.jsx";
 
+// Get only number from budget string
+const budgetValue = (b) => {
+  const n = parseInt(String(b).replace(/[^0-9]/g, ""), 10);
+  return Number.isNaN(n) ? 0 : n;
+};
+
 function Wishlist() {
   const [wishlist, setWishlist] = useState([]);
   const [expandedId, setExpandedId] = useState(null);
   const [confirmItem, setConfirmItem] = useState(null); // item pending delete
+  const [search, setSearch] = useState("");
+  const [sort, setSort] = useState("default");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -46,11 +54,19 @@ function Wishlist() {
     });
   }
 
-  // Approximate Budget
-  const totalBudget = wishlist.reduce((sum, item) => {
-    const n = parseInt(String(item.budget).replace(/[^0-9]/g, ""), 10);
-    return sum + (Number.isNaN(n) ? 0 : n);
-  }, 0);
+  // Approximate total budget
+  const totalBudget = wishlist.reduce((sum, item) => sum + budgetValue(item.budget), 0);
+
+  // Filter by search + sort by budget
+  const view = wishlist
+    .filter((i) =>
+      (i.country || "").toLowerCase().includes(search.trim().toLowerCase())
+    )
+    .sort((a, b) => {
+      if (sort === "budget-asc") return budgetValue(a.budget) - budgetValue(b.budget);
+      if (sort === "budget-desc") return budgetValue(b.budget) - budgetValue(a.budget);
+      return 0;
+    });
 
   return (
     <div className="app-page">
@@ -69,7 +85,25 @@ function Wishlist() {
           </Link>
         </div>
       ) : (
-        wishlist.map((item) => (
+        <>
+          <div className="list-controls">
+            <input
+              type="text"
+              placeholder="Search wishlist..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <select value={sort} onChange={(e) => setSort(e.target.value)}>
+              <option value="default">Recently added</option>
+              <option value="budget-asc">Budget: Low → High</option>
+              <option value="budget-desc">Budget: High → Low</option>
+            </select>
+          </div>
+
+          {view.length === 0 ? (
+            <p className="muted">No countries match your search.</p>
+          ) : (
+            view.map((item) => (
           <div
             key={item._id}
             className="card list-item"
@@ -134,7 +168,9 @@ function Wishlist() {
               </>
             )}
           </div>
-        ))
+            ))
+          )}
+        </>
       )}
 
       <ConfirmDialog

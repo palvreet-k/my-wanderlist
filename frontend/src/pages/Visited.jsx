@@ -7,6 +7,8 @@ function Visited() {
   const [visited, setVisited] = useState([]);
   const [expandedId, setExpandedId] = useState(null);
   const [confirmItem, setConfirmItem] = useState(null); // item pending delete
+  const [search, setSearch] = useState("");
+  const [sort, setSort] = useState("default");
 
   const navigate = useNavigate();
 
@@ -52,6 +54,19 @@ function Visited() {
     return new Date(value).toLocaleDateString();
   }
 
+  const dateValue = (d) => (d ? new Date(d).getTime() : 0);
+
+  // Filter by search + sort by visit date
+  const view = visited
+    .filter((i) =>
+      (i.country || "").toLowerCase().includes(search.trim().toLowerCase())
+    )
+    .sort((a, b) => {
+      if (sort === "date-newest") return dateValue(b.visitDate) - dateValue(a.visitDate);
+      if (sort === "date-oldest") return dateValue(a.visitDate) - dateValue(b.visitDate);
+      return 0;
+    });
+
   return (
     <div className="app-page">
       <h1 className="page-title" style={{ textAlign: "center" }}>✅ Visited Countries</h1>
@@ -64,7 +79,25 @@ function Visited() {
           </Link>
         </div>
       ) : (
-        visited.map((item) => (
+        <>
+          <div className="list-controls">
+            <input
+              type="text"
+              placeholder="Search visited..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <select value={sort} onChange={(e) => setSort(e.target.value)}>
+              <option value="default">Recently added</option>
+              <option value="date-newest">Visit date: Newest</option>
+              <option value="date-oldest">Visit date: Oldest</option>
+            </select>
+          </div>
+
+          {view.length === 0 ? (
+            <p className="muted">No countries match your search.</p>
+          ) : (
+            view.map((item) => (
           <div
             key={item._id}
             className="card list-item"
@@ -120,7 +153,9 @@ function Visited() {
               </>
             )}
           </div>
-        ))
+            ))
+          )}
+        </>
       )}
 
       <ConfirmDialog

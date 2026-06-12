@@ -467,6 +467,29 @@ body {
   color: #6b7280;
 }
 
+/* ---------- List search + sort controls ---------- */
+.list-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.list-controls input,
+.list-controls select {
+  padding: 9px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background: #fff;
+  font-family: 'Rubik', sans-serif;
+  font-size: 0.9rem;
+}
+
+.list-controls input {
+  flex: 1;
+  min-width: 180px;
+}
+
 /* ---------- List items (Wishlist / Visited) ---------- */
 .list-item {
   margin-bottom: 12px;
