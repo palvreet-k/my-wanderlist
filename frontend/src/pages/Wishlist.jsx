@@ -46,9 +46,20 @@ function Wishlist() {
     });
   }
 
+  // Approximate Budget
+  const totalBudget = wishlist.reduce((sum, item) => {
+    const n = parseInt(String(item.budget).replace(/[^0-9]/g, ""), 10);
+    return sum + (Number.isNaN(n) ? 0 : n);
+  }, 0);
+
   return (
     <div className="app-page">
-      <h1 className="page-title" style={{ textAlign: "center" }}>⭐ Wishlist</h1>
+      <h1 className="page-title" style={{ textAlign: "center" }}>
+        ⭐ Wishlist
+        {wishlist.length > 0 && (
+          <span className="budget-badge">💰 ~${totalBudget.toLocaleString()}</span>
+        )}
+      </h1>
 
       {wishlist.length === 0 ? (
         <div className="empty-state">

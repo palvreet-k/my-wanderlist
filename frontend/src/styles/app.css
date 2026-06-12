@@ -65,6 +65,20 @@ body {
   font-size: 0.9rem;
 }
 
+.budget-badge {
+  display: inline-block;
+  margin-left: 12px;
+  vertical-align: middle;
+  background: #ecfdf5;
+  border: 1px solid #a7f3d0;
+  color: #065f46;
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-shadow: none;
+}
+
 .home-intro {
   max-width: 600px;
   margin: 0 auto 16px;
@@ -166,6 +180,132 @@ body {
 .home-steps strong {
   color: #059669;
   margin-right: 6px;
+}
+
+/* ---------- Stats page ---------- */
+.stat-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.stat-card {
+  flex: 1 1 140px;
+  background: #fff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 18px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(6, 95, 70, 0.1);
+}
+
+.stat-num {
+  display: block;
+  font-family: 'Rubik', sans-serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #065f46;
+}
+
+.stat-label {
+  display: block;
+  margin-top: 4px;
+  font-size: 0.85rem;
+  color: #6b7280;
+}
+
+.chart-card {
+  margin-bottom: 20px;
+}
+
+.chart-title {
+  margin: 0 0 16px;
+  font-family: 'Rubik', sans-serif;
+  font-size: 1.05rem;
+  color: #064e3b;
+}
+
+.chart {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.chart-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.chart-label {
+  width: 80px;
+  flex-shrink: 0;
+  font-size: 0.85rem;
+  color: #374151;
+  text-align: right;
+}
+
+/* Pie chart (wishlist by budget) */
+.pie-wrap {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 28px;
+}
+
+.pie {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 4px 14px rgba(6, 95, 70, 0.15);
+}
+
+.pie-legend {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  font-size: 0.9rem;
+  color: #374151;
+}
+
+.pie-legend li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.pie-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.chart-track {
+  flex: 1;
+  background: #f1f5f9;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.chart-bar {
+  height: 22px;
+  border-radius: 6px;
+  min-width: 2px;
+  transition: width 0.3s;
+}
+
+.chart-value {
+  width: 28px;
+  flex-shrink: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #065f46;
 }
 
 /* Empty-state (Wishlist / Visited with no items) */

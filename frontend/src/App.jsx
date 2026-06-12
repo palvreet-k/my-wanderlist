@@ -15,6 +15,7 @@ import Wishlist from "./pages/Wishlist.jsx";
 import WishlistForm from "./pages/WishlistForm.jsx";
 import Visited from "./pages/Visited.jsx";
 import VisitedForm from "./pages/VisitedForm.jsx";
+import Stats from "./pages/Stats.jsx";
 
 // Validates the stored token against the backend (/api/auth/me) on load.
 // Check for Invalid, expired or missing token
@@ -71,6 +72,7 @@ function App() {
           <Route path="/wishlist-form/:name" element={<WishlistForm />} />
           <Route path="/visited" element={<Visited />} />
           <Route path="/visited-form" element={<VisitedForm />} />
+          <Route path="/stats" element={<Stats />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/login" replace />} />
