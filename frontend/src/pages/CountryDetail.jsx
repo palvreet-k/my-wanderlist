@@ -79,6 +79,20 @@ function CountryDetail() {
           </p>
         </div>
 
+        {/* Top attractions (Google Maps) */}
+        <div className="list-actions">
+          <a
+            className="btn btn-secondary"
+            href={`https://www.google.com/maps/search/${encodeURIComponent(
+              `top attractions in ${country.name.common}`
+            )}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            🗺️ Top attractions
+          </a>
+        </div>
+
         {/* Actions */}
         <div className="list-actions">
           <button
